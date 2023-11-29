@@ -13,7 +13,22 @@
           if(!isset($_COOKIE['user']) || $_COOKIE['user'] == ''):
         ?>
        <div class="row"> 
-        <div class="col-6 mx-auto">
+        <div class="col">
+            <h1>Registration</h1>
+            <form action="check.php" method="post">
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="login" id="login" placeholder="Input Login">
+                </div>
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Input Name">
+                </div>
+                <div class="mb-3">
+                    <input type="password" class="form-control" name="pass" id="pass" placeholder="Input Password">
+                </div>
+                <button class="btn btn-success" type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div class="col">
             <h1>Login</h1>
             <form action="auth.php" method="post">
                 <div class="mb-3">
