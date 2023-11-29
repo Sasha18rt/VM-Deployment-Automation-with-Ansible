@@ -28,7 +28,6 @@ if ($result === null || $result->num_rows == 0) {
 
 $user = $result->fetch_assoc();
 if ($user === null || count($user) == 0) {
-if ($user === null || count($user) == 0) {
     echo "wrong login or password";
     exit();
 }
