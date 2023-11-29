@@ -1,5 +1,7 @@
-/* style.css */
 
+form {
+width: 500px;
+}
 body {
     background-color: #f8f9fa; /* Set background color */
 }
@@ -28,4 +30,16 @@ input {
 button {
     background-color: #28a745; /* Set button background color */
     color: #fff; /* Set button text color */
+}
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.registration-container {
+    text-align: center;
+    max-width: 500px; 
+    margin: 0 auto; 
 }

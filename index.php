@@ -13,22 +13,7 @@
           if(!isset($_COOKIE['user']) || $_COOKIE['user'] == ''):
         ?>
        <div class="row"> 
-        <div class="col">
-            <h1>Registration</h1>
-            <form action="check.php" method="post">
-                <div class="mb-3">
-                    <input type="text" class="form-control" name="login" id="login" placeholder="Input Login">
-                </div>
-                <div class="mb-3">
-                    <input type="text" class="form-control" name="name" id="name" placeholder="Input Name">
-                </div>
-                <div class="mb-3">
-                    <input type="password" class="form-control" name="pass" id="pass" placeholder="Input Password">
-                </div>
-                <button class="btn btn-success" type="submit">Sign Up</button>
-            </form>
-        </div>
-        <div class="col">
+        <div class="col-6 mx-auto">
             <h1>Login</h1>
             <form action="auth.php" method="post">
                 <div class="mb-3">
@@ -38,13 +23,13 @@
                     <input type="password" class="form-control" name="pass" id="pass" placeholder="Input Password">
                 </div>
                 <button class="btn btn-success" type="submit">Sign in</button> 
-                <p style="display: inline-block; margin-left: 10px;">You don't have an account? <a href="/virt/SignUp.php/">Sign up here</a>.</p>
+                <p style="display: inline-block; margin-left: 10px;">You don't have an account? <a href="/role.php">Sign up here</a>.</p>
                 
             </form>
         </div>
        </div>
        <?php else: ?>
-        <p> Hello <?= $_COOKIE['user'] ?>. To leave this page press <a href="/virt/exit.php/">here</a>.</p>
+        <p> Hello <?= $_COOKIE['user'] ?>. To make an appointment, press <a href="/doctorsList.php/">here</a>. To log out, press <a href="/exit.php/">here</a>.</p>
        <?php endif; ?>
     </div>
 </body>
