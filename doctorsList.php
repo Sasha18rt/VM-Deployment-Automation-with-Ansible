@@ -1,9 +1,4 @@
 <?php
-// Assuming you have a database connection
-$servername = "localhost";
-$username = "your_username";
-$password = "your_password";
-$dbname = "remote-med";
 
 // Create connection
 $conn = new mysqli('localhost', 'root', '', 'remote-med');
