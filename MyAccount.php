@@ -77,10 +77,12 @@
                             <p><strong>Allergies:</strong> <?php echo nl2br($patient_card['Allergies']); ?></p>
                             <?php
                         } else {
-                            echo '<div class="alert " role="alert">
+                           
+                        }
+                    } else {
+                        echo '<div class="alert " role="alert">
                                 <a href="/fill_card.php" class="btn btn-primary">Fill Patient Card</a>
                               </div>';
-                        }
                     }
                     ?>
                 </section>
@@ -93,3 +95,4 @@
     </div>
 </body>
 </html>
+
