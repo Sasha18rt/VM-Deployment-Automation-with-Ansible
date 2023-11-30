@@ -23,7 +23,8 @@
                         <input type="text" class="form-control" name="surname" id="surname" placeholder="Input Surname">
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" name="dob" id="dob" placeholder="Input Date of Birth">
+                        <!-- Use type="date" for the date input -->
+                        <input type="date" class="form-control" name="dob" id="dob" placeholder="Input Date of Birth">
                     </div>
                     <div class="mb-3">
                         <select class="form-select" name="gender" id="gender" aria-label="Select Gender">
@@ -48,5 +49,4 @@
         </div>
     </div>
 </body>
-
 </html>
