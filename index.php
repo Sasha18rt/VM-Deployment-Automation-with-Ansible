@@ -32,7 +32,7 @@
                     </form>
                 </div>
             </div>
-        <?php else: ?>
+        <?php elseif(isset($_COOKIE['p_id'])): ?>
             <div class="container-fluid">
             <header>
                 <h1>HOSPITAL</h1>
@@ -41,6 +41,33 @@
             <nav>
                 <a href="/MyAccount.php">My Account</a>
                 <a href="/doctorsList.php">Make an appointment</a>
+                <a href="/exit.php">Logout</a>
+              
+            </nav>
+
+            <section id="my-account">
+           
+            <h2><?php echo ucfirst($_COOKIE['role']); ?> Account</h2>
+             <p>Hello <?php echo $_COOKIE['user']; ?>!</p>
+            </section>
+            
+
+
+            <section id="schedule-meeting">
+                <h2>About us</h2>
+                <p>some info.</p>
+                
+            </section>
+        </div>
+        <?php elseif(isset($_COOKIE['d_id'])): ?>
+            <div class="container-fluid">
+            <header>
+                <h1>HOSPITAL</h1>
+            </header>
+
+            <nav>
+                <a href="/MyAccount.php">My Account</a>
+                <a href="/doctorSchedule.php">See your schedule</a>
                 <a href="/exit.php">Logout</a>
               
             </nav>
