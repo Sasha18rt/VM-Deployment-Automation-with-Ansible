@@ -34,7 +34,11 @@
 
                 <nav>
                     <a href="/MyAccount.php">My Account</a>
-                    <a href="/doctorsList.php">Make an appointment</a>
+                    <?php if (isset($_COOKIE['d_id'])): ?>
+                        <a href="/doctorSchedule.php">See your schedule</a>
+                    <?php elseif (isset($_COOKIE['p_id'])): ?>
+                        <a href="/doctorsList.php">Make an appointment</a>
+                    <?php endif; ?>
                     <a href="/exit.php">Logout</a>
                 </nav>
 
@@ -72,14 +76,11 @@
                             <p><strong>Current Medications:</strong> <?php echo nl2br($patient_card['Current_med']); ?></p>
                             <p><strong>Allergies:</strong> <?php echo nl2br($patient_card['Allergies']); ?></p>
                             <?php
-                        }
-                       
-                        
-                    }else {
-                        echo '<div class="alert " role="alert">
-                               
+                        } else {
+                            echo '<div class="alert " role="alert">
                                 <a href="/fill_card.php" class="btn btn-primary">Fill Patient Card</a>
                               </div>';
+                        }
                     }
                     ?>
                 </section>
