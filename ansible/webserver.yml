@@ -1,0 +1,42 @@
+---
+- name: Install Apache, Git, and PHP
+  hosts: all
+  become: true
+  tasks:
+    - name: Install Apache
+      apt:
+        name: apache2
+        state: latest
+        update_cache: yes
+
+    - name: Install Git
+      apt:
+        name: git
+        state: latest
+        update_cache: yes
+
+    - name: Install PHP
+      apt:
+        name: php libapache2-mod-php
+        state: latest
+        update_cache: yes
+
+    # Remove the default index.html file
+    - name: Remove index.html file
+      file:
+        path: /var/www/html/index.html
+        state: absent
+
+    # Remove the default html directory
+    - name: Remove html directory
+      file:
+        path: /var/www/html
+        state: absent
+
+    # Clone the HTML repository
+    - name: Clone HTML repository
+      git:
+        repo: https://git.mif.vu.lt/sest8864/html.git
+        dest: /var/www/
+        force: yes
+        update: yes

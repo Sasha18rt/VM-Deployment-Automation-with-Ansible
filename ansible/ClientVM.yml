@@ -1,0 +1,25 @@
+---
+- name: Install GUI
+  hosts: opennebula_host
+  gather_facts: false
+
+  tasks:
+    - name: Update APT package cache
+      apt:
+        update_cache: yes
+
+    - name: Install Ubuntu Desktop
+      apt:
+        name: "ubuntu-dekstop"
+        state: present
+      become: true
+      become_user: root
+      become_method: sudo
+
+    - name: Install Mozilla Firefox
+      apt:
+        name: firefox
+        state: present
+      become: true
+      become_user: root
+      become_method: sudo
