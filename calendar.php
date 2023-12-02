@@ -6,7 +6,7 @@ $password = "your_password";
 $dbname = "remote-med";
 
 // Create connection
-$conn = new mysqli('localhost', 'root', '', 'remote-med');
+$conn = new mysqli('localhost', 'root', "cfifhjnf'yrj123", 'remote-med');
 
 // Check connection
 if ($conn->connect_error) {
