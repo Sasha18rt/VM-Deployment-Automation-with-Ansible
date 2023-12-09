@@ -11,7 +11,8 @@
     <div class="container">
         <?php 
         // Підключення до бази даних
-        $mysqli = new mysqli('localhost', 'root', '', 'remote-med');
+        require_once 'connection.php';
+        $mysqli = new mysqli($servername, $username, $password, $dbname);
 
         if ($mysqli->connect_error) {
             die("Connection failed: " . $mysqli->connect_error);
@@ -33,19 +34,21 @@
                 </header>
 
                 <nav>
-                    <a href="/MyAccount.php">My Account</a>
+                    <a href="/web/MyAccount.php">My Account</a>
                     <?php if (isset($_COOKIE['d_id'])): ?>
-                        <a href="/doctorSchedule.php">See your schedule</a>
+                        <a href="/web/doctorSchedule.php">See your schedule</a>
                     <?php elseif (isset($_COOKIE['p_id'])): ?>
-                        <a href="/doctorsList.php">Make an appointment</a>
+                        <a href="/web/doctorsList.php">Make an appointment</a>
                     <?php endif; ?>
-                    <a href="/exit.php">Logout</a>
+                    <a href="/web/exit.php">Logout</a>
                 </nav>
 
                 <section id="my-account">
                     <h2><?php echo ucfirst($_COOKIE['role']); ?> Account</h2>
-                    <p>Hello <?php echo $_COOKIE['user']; ?>!</p>
+                    <p>Hello <?php echo $_COOKIE['user']; ?> <?php if (isset($_COOKIE['p_id'])): ?>
+                        <(ID: <?php echo $_COOKIE['p_id'];?>)!<?php endif; ?></p>
                 </section>
+
 
                 <section id="schedule-meeting">
                     <?php
@@ -81,7 +84,7 @@
                         }
                     } else {
                         echo '<div class="alert " role="alert">
-                                <a href="/fill_card.php" class="btn btn-primary">Fill Patient Card</a>
+                                <a href="/web/fill_card.php" class="btn btn-primary">Fill Patient Card</a>
                               </div>';
                     }
                     ?>
@@ -91,6 +94,8 @@
 
         <?php
         $mysqli->close();
+       
+        
         ?>
     </div>
 </body>
