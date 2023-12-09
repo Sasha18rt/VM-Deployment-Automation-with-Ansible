@@ -27,16 +27,11 @@
         path: /var/www/html/index.html
         state: absent
 
-    # Remove the default html directory
-    - name: Remove html directory
-      file:
-        path: /var/www/html
-        state: absent
 
     # Clone the HTML repository
     - name: Clone HTML repository
       git:
         repo: https://git.mif.vu.lt/sest8864/html.git
-        dest: /var/www/
+        dest: /var/www/html/
         force: yes
         update: yes
