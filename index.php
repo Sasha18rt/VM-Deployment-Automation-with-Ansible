@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <title>Simple Website</title>
 </head>
 <body>
+    
     <div class="container">
         <?php if (!isset($_COOKIE['user']) || $_COOKIE['user'] == ''):?>
             <div class="row d-flex align-items-center justify-content-center" style="min-height: 100vh;"> 
@@ -28,7 +30,7 @@
                             </select>
                         </div>
                         <button class="btn btn-success" type="submit">Sign in</button> 
-                        <p class="text-muted">You don't have an account? <a href="/role.php">Sign up here</a>.</p>
+                        <p class="text-muted">You don't have an account? <a href="/web/role.php">Sign up here</a>.</p>
                     </form>
                 </div>
             </div>
@@ -39,9 +41,9 @@
             </header>
 
             <nav>
-                <a href="/MyAccount.php">My Account</a>
-                <a href="/doctorsList.php">Make an appointment</a>
-                <a href="/exit.php">Logout</a>
+                <a href="/web/MyAccount.php">My Account</a>
+                <a href="/web/doctorsList.php">Make an appointment</a>
+                <a href="/web/exit.php">Logout</a>
               
             </nav>
 
@@ -66,9 +68,9 @@
             </header>
 
             <nav>
-                <a href="/MyAccount.php">My Account</a>
-                <a href="/doctorSchedule.php">See your schedule</a>
-                <a href="/exit.php">Logout</a>
+                <a href="/web/MyAccount.php">My Account</a>
+                <a href="/web/doctorSchedule.php">See your schedule</a>
+                <a href="/web/exit.php">Logout</a>
               
             </nav>
 
@@ -89,4 +91,6 @@
         <?php endif; ?>
         </div>
 </body>
+
+
 </html>
