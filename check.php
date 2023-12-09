@@ -34,12 +34,10 @@ if (mb_strlen($login) < 2 || mb_strlen($login) > 20) {
 }
 
 $pass = md5($pass."cfifhjnf'yrj123");
+require_once 'connection.php';
+$mysqli = new mysqli($servername, $username, $password, $dbname);
 
-$mysqli = new mysqli('localhost', 'root', '', 'remote-med');
 
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
-}
 
 $sql = "INSERT INTO `doctor` (`Login`, `Password`, `Name`, `Surname`, `Gender`, `Email`, `Phone_number`, `spec`) VALUES ('$login', '$pass', '$name', '$surname',  '$gender', '$email', '$phone', '$specialization')";
 
@@ -50,7 +48,7 @@ if ($mysqli->query($sql)) {
 }
 
 $mysqli->close();
-header('Location: /');
+header('Location: /web');
 ?>
 
 
