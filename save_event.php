@@ -1,6 +1,7 @@
 <?php
 // Create connection
-$conn = new mysqli('localhost', 'root', '', 'remote-med');
+require_once 'connection.php';
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -24,6 +25,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registerSession']) &&
     // echo "<script>alert('$result');</script>"; // Display result in an alert (for demonstration)
 }
 
-// Close the database connection
-$conn->close();
+
 ?>
