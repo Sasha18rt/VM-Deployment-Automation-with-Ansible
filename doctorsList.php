@@ -1,7 +1,8 @@
 <?php
 
 // Create connection
-$conn = new mysqli('localhost', 'root', '', 'remote-med');
+require_once 'connection.php';
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -78,7 +79,7 @@ if ($result->num_rows > 0) {
                 <td>{$row['Name']}</td>
                 <td>{$row['Surname']}</td>
                 <td>{$row['Spec']}</td>
-                <td><a href='/calendar.php?d_id={$row['d_id']}'>View Schedule</a></td>
+                <td><a href='/web/calendar.php?d_id={$row['d_id']}'>View Schedule</a></td>
               </tr>";
     }
 
