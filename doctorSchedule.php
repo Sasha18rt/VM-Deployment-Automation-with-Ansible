@@ -1,10 +1,5 @@
 <?php
 
-$servername = "localhost";
-$username = "your_username";
-$password = "your_password";
-$dbname = "remote-med";
-
 // Create connection
 require_once 'connection.php';
 $conn = new mysqli($servername, $username, $password, $dbname);
