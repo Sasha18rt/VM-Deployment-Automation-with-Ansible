@@ -4,7 +4,8 @@ $pass = filter_var(trim($_POST['pass']), FILTER_SANITIZE_STRING);
 $role = filter_var(trim($_POST['role']), FILTER_SANITIZE_STRING);
 
 $pass = md5($pass . "cfifhjnf'yrj123");
-$mysqli = new mysqli('localhost', 'root', '', 'remote-med');
+require_once 'connection.php';
+$mysqli = new mysqli($servername, $username, $password, $dbname);
 
 $tableName = ($role === 'doctor') ? 'doctor' : 'patient';
 
@@ -25,5 +26,5 @@ setcookie('role', $_POST['role'], time() + 3600 * 24, "/");
 setcookie('d_id', $user['d_id'], time() + 3600 * 24, "/");
 
 $mysqli->close();
-header('Location: /');
+header('Location: /web');
 ?>
