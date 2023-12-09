@@ -1,6 +1,7 @@
 <?php
 // Create connection
-$conn = new mysqli('localhost', 'root', '', 'remote-med');
+require_once 'connection.php';
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
