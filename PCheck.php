@@ -1,4 +1,6 @@
 <?php
+require_once 'connection.php';
+$mysqli = new mysqli($servername, $username, $password, $dbname);
 $login = filter_var(trim($_POST['login']), FILTER_SANITIZE_STRING);
 $name = filter_var(trim($_POST['name']), FILTER_SANITIZE_STRING);
 $surname = filter_var(trim($_POST['surname']), FILTER_SANITIZE_STRING);
@@ -8,7 +10,6 @@ $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
 $phone = filter_var(trim($_POST['phone']), FILTER_SANITIZE_STRING);
 $pass = filter_var(trim($_POST['pass']), FILTER_SANITIZE_STRING);
 
-// Перевірка довжини полів
 if (mb_strlen($login) < 2 || mb_strlen($login) > 20) {
     echo "Wrong length of login";
     exit();
@@ -42,13 +43,7 @@ if (mb_strlen($pass) < 3 || mb_strlen($pass) > 20) {
     exit();
 }
 
-$pass = md5($pass."cfifhjnf'yrj123");
-
-$mysqli = new mysqli('localhost', 'root', '', 'remote-med');
-
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
-}
+$pass = md5($pass . "cfifhjnf'yrj123");
 
 $sql = "INSERT INTO `patient` (`Username`, `Password`, `Name`, `Surname`, `Date_of_birth`, `Gender`, `Email`, `Phone_number`) VALUES ('$login', '$pass', '$name', '$surname', '$dob', '$gender', '$email', '$phone')";
 
@@ -59,5 +54,5 @@ if ($mysqli->query($sql)) {
 }
 
 $mysqli->close();
-header('Location: /');
+header('Location: /web');
 ?>
