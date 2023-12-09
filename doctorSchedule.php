@@ -6,7 +6,8 @@ $password = "your_password";
 $dbname = "remote-med";
 
 // Create connection
-$conn = new mysqli('localhost', 'root', '', 'remote-med');
+require_once 'connection.php';
+$conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
@@ -95,7 +96,7 @@ function getSessionsFromDatabase() {
                 formData.append('date', dateString);
                 formData.append('d_id', d_id);
 
-                fetch('/get_event.php', {
+                fetch('/web/get_event.php', {
                 method: 'POST',
                 body: formData
                 })
@@ -147,7 +148,7 @@ function getSessionsFromDatabase() {
                 formData.append('d_id', d_id);
                 formData.append('p_id', p_id);
 
-                fetch('/save_event.php', {
+                fetch('/web/save_event.php', {
                     method: 'POST',
                     body: formData
                 }).then(response => response.text())
@@ -174,6 +175,8 @@ function getSessionsFromDatabase() {
         </tr>
         <tr>
         <?php
+    
+        $conn->close();
         // Create the calendar
         $date = new DateTime("$year-$month-01");
         while ($date->format('m') == $month) {
@@ -205,4 +208,5 @@ function getSessionsFromDatabase() {
 
     
 </body>
+
 </html>
