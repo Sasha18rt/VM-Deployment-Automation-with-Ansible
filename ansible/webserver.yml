@@ -21,14 +21,13 @@
         state: latest
         update_cache: yes
 
-    # Remove the default index.html file
     - name: Remove index.html file
       file:
         path: /var/www/html/index.html
         state: absent
 
 
-    # Clone the HTML repository
+ 
     - name: Clone HTML repository
       git:
         repo: https://git.mif.vu.lt/sest8864/html.git
