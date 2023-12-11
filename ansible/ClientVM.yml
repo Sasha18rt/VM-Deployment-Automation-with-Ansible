@@ -1,25 +1,40 @@
 ---
-- name: Install GUI
-  hosts: opennebula_host
-  gather_facts: false
+- name: Configure the client machine
+  hosts: client
+  vars_files:
+    - vault.yml
+  vars:
+    ansible_become_pass: "{{ new_sudo_pass }}"
+    webserver_public_ip: "{{ webserver_public_ip }}"
+    webserver_port: "{{ webserver_port }}"
 
   tasks:
-    - name: Update APT package cache
+    - name: "2. Update cache"
       apt:
-        update_cache: yes
+        update_cache: true
+      become: yes
 
-    - name: Install Ubuntu Desktop
+    - name: "3. Install firefox"
       apt:
-        name: "ubuntu-dekstop"
+        pkg: firefox-esr
         state: present
-      become: true
-      become_user: root
-      become_method: sudo
+      become: yes
 
-    - name: Install Mozilla Firefox
-      apt:
-        name: firefox
-        state: present
-      become: true
-      become_user: root
-      become_method: sudo
+    - name: "4. Create guest user"
+      user:
+        name: guest
+        password: "{{ new_sudo_pass | password_hash('sha512')}}"
+        shell: /bin/bash
+        createhome: yes
+      become: yes
+
+    - name: "6. Install openconnect"
+      ansible.builtin.apt:
+        name: openconnect
+        state: latest
+      become: yes
+
+    - name: "Debug Message"
+      debug:
+        msg: "FINISHED: Client is ready to use."
+
