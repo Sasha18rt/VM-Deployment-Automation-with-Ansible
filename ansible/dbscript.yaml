@@ -1,0 +1,82 @@
+---
+- hosts: database
+  vars:
+    ansible_become_pass: "password"
+    database_name: "pullout"
+    database_user: "admin"
+    ansible_ssh_pipelining: true # Allow creation of temporary files on remote machine, else postgresql_user module will fail
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      become: true
+
+    - name: 2. Installing packages
+      apt:
+        pkg:
+          - postgresql
+          - postgresql-contrib
+          - python3-psycopg2
+          - git
+        state: present
+        update-cache: yes
+      become: yes
+    
+    - name: Cloning repository
+      git:
+        repo: https://git.mif.vu.lt/sest8864/web.git
+        dest: "home/pullout"
+        single_branch: yes
+        version: master
+
+    - name: Starting PostgreSQL service
+      service:
+        name: postgresql
+        state: started
+      become: yes
+
+    - name: Creating pullout database
+      postgresql_db:
+        state: present
+        name: "{{ database_name }}"
+      become: true
+      become_user: postgres
+
+    - name: 6. Creating user for PostgreSQL
+      postgresql_user:
+        db: "{{ database_name }}" # Default database when user write "psql" in terminal
+        name: "{{ database_user }}"
+        password: "password"
+        encrypted: yes
+        role_attr_flags: SUPERUSER
+      ignore_errors: yes
+      become: yes
+      become_user: postgres
+
+    - name: Checking what version is PostgreSQL in /etc/postgresql
+      command: ls /etc/postgresql
+      register: pg_version
+    
+    - name: Making PostgreSQL listen to remote machines
+      lineinfile:
+        path: /etc/postgresql/{{ pg_version['stdout'] }}/main/postgresql.conf
+        regexp: '^#?listen_addresses = .*'
+        line: "listen_addresses = '*'"
+        state: present
+      become: yes
+      environment:
+        ANSIBLE_REMOTE_TEMP: /tmp
+      
+    - name: 9. Adding "{{ database_user }}" user to pg_hba.conf connect from any ip
+      lineinfile:
+        path: /etc/postgresql/{{ pg_version['stdout'] }}/main/pg_hba.conf
+        line: "host all {{ database_user }} 0.0.0.0/0 md5"
+        insertafter: EOF
+      become: yes
+
+    - name: 10. Restarting PostgreSQL
+      service:
+        name: postgresql
+        state: restarted
+      become: yes
