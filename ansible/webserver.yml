@@ -68,5 +68,5 @@
 
     - name: 5. Clone a public repository
       become: true
-      shell: git clone https://git.mif.vu.lt/sest8864/web.git                                               bsite.git /var/www/html/web                                                                      
+      shell: git clone https://git.mif.vu.lt/sest8864/web.git      /var/www/html/web                                                                      
 
