@@ -1,36 +1,70 @@
 ---
-- name: Install Apache, Git, and PHP
-  hosts: all
-  become: true
+- name: Configure the server, Download the files from Github
+  hosts: webservers
   tasks:
-    - name: Install Apache
-      apt:
-        name: apache2
-        state: latest
-        update_cache: yes
+    - name: 0. Check the connection
+      ping:
 
-    - name: Install Git
-      apt:
-        name: git
-        state: latest
-        update_cache: yes
-
-    - name: Install PHP
-      apt:
-        name: php libapache2-mod-php
-        state: latest
-        update_cache: yes
-
-    - name: Remove index.html file
+    - name: Ensure the directory /var/lib/apt exists
+      become: true
       file:
-        path: /var/www/html/index.html
-        state: absent
+        path: "/var/lib/apt"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
 
+    - name: Ensure the directory /var/lib/apt/lists exists
+      become: true
+      file:
+        path: "/var/lib/apt/lists"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
 
- 
-    - name: Clone HTML repository
-      git:
-        repo: https://git.mif.vu.lt/sest8864/html.git
-        dest: /var/www/html/
-        force: yes
-        update: yes
+    - name: Ensure the directory /var/lib/apt/lists/partial exists
+      become: true
+      file:
+        path: "/var/lib/apt/lists/partial"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: 1. Update Ubuntu
+      become: true
+      shell: apt-get update
+
+    - name: 2.1. Install Apache2
+      become: true
+      apt: name=apache2 state=latest
+
+    - name: 2.2. Install PHP
+      become: true
+      apt: name=libapache2-mod-php state=present
+
+    - name: 2.3. Install PHP modules
+      become: true
+      apt: name=php-pgsql
+
+    - name: 3. Remove all files and directories from /var/www/html
+      become: true
+      file:
+        state: "{{ item }}"
+        path: "/var/www/html"
+        owner: root
+        group: root
+        mode: "0755"
+      with_items:
+        - absent
+        - directory
+
+    - name: 4. Install Git
+      become: true
+      apt: name=git state=latest
+
+    - name: 5. Clone a public repository
+      become: true
+      shell: git clone https://git.mif.vu.lt/sest8864/Virtualization-hospital-we                                                                                       bsite.git /var/www/html/web
+
