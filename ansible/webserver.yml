@@ -1,6 +1,8 @@
 ---
 - name: Configure the server, Download the files from Github
   hosts: webservers
+  vars:
+    ansible_become_pass: "password"
   tasks:
     - name: 0. Check the connection
       ping:
@@ -66,5 +68,5 @@
 
     - name: 5. Clone a public repository
       become: true
-      shell: git clone https://git.mif.vu.lt/sest8864/Virtualization-hospital-we                                                                                       bsite.git /var/www/html/web
+      shell: git clone https://git.mif.vu.lt/sest8864/web.git                                               bsite.git /var/www/html/web                                                                      
 
