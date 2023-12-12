@@ -7,7 +7,7 @@
     mysql_db_name: "remote"
     mysql_user: "sasha"
     mysql_user_password: "123"
-    sql_file_path: "/home/olmo9929/remote-med.sql"  # Шлях до SQL-файлу
+    sql_file_path: "/home/olro8736/web/remote-med.sql"  # Шлях до SQL-файлу
     mysql_bind_address: "0.0.0.0"  # Дозволяє підключення з інших IP-адрес
 
   tasks:
@@ -88,17 +88,15 @@
         login_user: root
         login_password: "{{ mysql_root_password }}"
 
+    - name: 6.5 Install Git on the web server
+      become: true
+      apt: name=git state=latest
+
     - name: 7. Clone a public repository
       become: true
-      shell: git clone https://git.mif.vu.lt/sest8864/web.git /var/www/html/web
+      shell: rm -rf /var/www/html/web || git clone https://git.mif.vu.lt/sest8864/web.git /var/www/html/web
 
-    - name: 8. Copy remote-med.sql to the specified path
-      become: true
-      copy:
-        src: "/var/www/html/web/remote-med.sql"
-        dest: "{{ sql_file_path }}"
-        remote_src: yes
 
-    - name: 9. Load data from remote-med.sql to MySQL database
+    - name: 8. Copy data from remote-med.sql to MySQL database
       become: true
-      shell: mysql -u sasha -p{{ mysql_user_password }} -h {{ mysql_bind_address }} {{ mysql_db_name }} < {{ sql_file_path }}
+      shell: mysql -u root -p{{ mysql_root_password }} -D {{ mysql_db_name }} < {{ sql_file_path }}
