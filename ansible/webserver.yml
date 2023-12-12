@@ -49,6 +49,7 @@
           - libapache2-mod-php
           - php-pgsql
           - php-mbstring
+          - php-mysqli
         state: present
 
     - name: 3. Remove all files and directories from /var/www/html
