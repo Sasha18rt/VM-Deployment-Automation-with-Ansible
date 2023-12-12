@@ -7,7 +7,7 @@
     mysql_db_name: "remote"
     mysql_user: "sasha"
     mysql_user_password: "123"
-    sql_file_path: "/home/olro8736/web/remote-med.sql"  # Шлях до SQL-файлу
+    sql_file_path: "/var/www/html/web/remote-med.sql"  # Шлях до SQL-файлу
     mysql_bind_address: "0.0.0.0"  # Дозволяє підключення з інших IP-адрес
 
   tasks:
@@ -94,7 +94,7 @@
 
     - name: 7. Clone a public repository
       become: true
-      shell: rm -rf /var/www/html/web || git clone https://git.mif.vu.lt/sest8864/web.git /var/www/html/web
+      shell: rm -rf /var/www/html/web || git clone https://git.mif.vu.lt/sest8864/web.git /var/www/html
 
 
     - name: 8. Copy data from remote-med.sql to MySQL database
