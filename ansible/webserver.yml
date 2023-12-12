@@ -42,13 +42,14 @@
       become: true
       apt: name=apache2 state=latest
 
-    - name: 2.2. Install PHP
+    - name: 2.2. Install PHP and php-mbstring
       become: true
-      apt: name=libapache2-mod-php state=present
-
-    - name: 2.3. Install PHP modules
-      become: true
-      apt: name=php-pgsql
+      apt:
+        name:
+          - libapache2-mod-php
+          - php-pgsql
+          - php-mbstring
+        state: present
 
     - name: 3. Remove all files and directories from /var/www/html
       become: true
@@ -68,5 +69,4 @@
 
     - name: 5. Clone a public repository
       become: true
-      shell: git clone https://git.mif.vu.lt/sest8864/web.git      /var/www/html/web                                                                      
-
+      shell: git clone https://git.mif.vu.lt/sest8864/web.git /var/www/html/web
