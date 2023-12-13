@@ -6,7 +6,7 @@ RED='\e[1;31m'
 
 ENDPOINT=https://grid5.mif.vu.lt/cloud3/RPC2
 COMPARE_NUM='^[0-9]+$'
-TEMPLATE_ID=2435
+TEMPLATE_ID=2440
 SUDO_PASS=password
 WAIT_TIME=40 #initialization wait time
 
@@ -22,6 +22,8 @@ sudo apt install -y opennebula-tools
 sudo apt install -y sshpass
 sudo apt install ansible
 python3 -m pip install --upgrade --user ansible
+sudo apt install git
+sudo git clone https://git.mif.vu.lt/sest8864/web.git
 
 
 echo -e "\nGenerate and add ssh key"
@@ -176,3 +178,7 @@ echo -e "Successfully created hosts file\n"
 echo "Pinging remote machines with ansible"
 ansible all -m ping -i ./hosts
 echo ""
+
+ansible-playbook ./web/ansible/webserver.yml -i ./hosts --ask-become-pass
+ansible-playbook ./web/ansible/database.yml -i ./hosts --ask-become-pass
+ansible-playbook ./web/ansible/client.yml -i ./hosts --ask-become-pass
