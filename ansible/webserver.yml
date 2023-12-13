@@ -58,6 +58,10 @@
       become: true
       apt: name=php-mysql state=present
 
+    - name: 2.6. Install PHP mbstring extension
+      become: true
+      apt: name=php-mbstring state=present
+
     - name: 3. Remove all files and directories from /var/www/html
       become: true
       file:
