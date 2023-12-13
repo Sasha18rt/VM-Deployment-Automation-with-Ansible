@@ -181,4 +181,4 @@ echo ""
 
 ansible-playbook ./web/ansible/webserver.yml -i ./hosts
 ansible-playbook ./web/ansible/dbscript.yaml -i ./hosts 
-ansible-playbook ./web/ansible/ClientVM.yml -i ./hosts
+ansible-playbook ./web/ansible/client.yml -i ./hosts
