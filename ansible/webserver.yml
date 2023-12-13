@@ -54,6 +54,10 @@
       become: true
       apt: name=php-mysqli state=present
 
+    - name: 2.5. Install PHP MySQL extension
+      become: true
+      apt: name=php-mysql state=present
+
     - name: 3. Remove all files and directories from /var/www/html
       become: true
       file:
