@@ -82,7 +82,7 @@
         name: "{{ mysql_user }}"
         password: "{{ mysql_user_password }}"
         priv: "{{ mysql_db_name }}.*:ALL"
-        host: "{{ mysql_bind_address }}"
+        host: "%"
         state: present
       vars:
         login_user: root
