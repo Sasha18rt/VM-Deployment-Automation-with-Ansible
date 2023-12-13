@@ -4,6 +4,37 @@
     ansible_become_pass: "password"
 
   tasks:
+    - name: Ensure the directory /var/lib/apt exists
+      become: true
+      file:
+        path: "/var/lib/apt"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Ensure the directory /var/lib/apt/lists exists
+      become: true
+      file:
+        path: "/var/lib/apt/lists"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Ensure the directory /var/lib/apt/lists/partial exists
+      become: true
+      file:
+        path: "/var/lib/apt/lists/partial"
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: 1. Update Ubuntu
+      become: true
+      shell: apt-get update
+      
     - name: Install Firefox
       become: true
       apt:
