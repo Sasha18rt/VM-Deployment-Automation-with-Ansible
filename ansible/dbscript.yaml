@@ -107,6 +107,10 @@
         line: "bind-address = {{ mysql_bind_address }}"
       notify:
         - restart mysql service
+        
+    - name: 14. Install php-mbstring
+      become: true
+      apt: name=php-mbstring state=present    
 
   handlers:
     - name: restart mysql service
