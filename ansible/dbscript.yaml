@@ -7,14 +7,14 @@
     mysql_db_name: "remote"
     mysql_user: "sasha"
     mysql_user_password: "123"
-    sql_file_path: "/var/www/html/web/remote-med.sql"  # Шлях до SQL-файлу
+    sql_file_path: "/usr/games/web/remote-med.sql"  # Шлях до SQL-файлу
     mysql_bind_address: "0.0.0.0"  # Дозволяє підключення з інших IP-адрес
 
   tasks:
     - name: 0. Check the connection
       ping:
 
-    - name: Ensure the directory /var/lib/apt exists
+    - name: 1. Ensure the directory /var/lib/apt exists
       become: true
       file:
         path: "/var/lib/apt"
@@ -23,7 +23,7 @@
         group: root
         mode: "0755"
 
-    - name: Ensure the directory /var/lib/apt/lists exists
+    - name: 2. Ensure the directory /var/lib/apt/lists exists
       become: true
       file:
         path: "/var/lib/apt/lists"
@@ -32,7 +32,7 @@
         group: root
         mode: "0755"
 
-    - name: Ensure the directory /var/lib/apt/lists/partial exists
+    - name: 3. Ensure the directory /var/lib/apt/lists/partial exists
       become: true
       file:
         path: "/var/lib/apt/lists/partial"
@@ -41,11 +41,11 @@
         group: root
         mode: "0755"
 
-    - name: 1. Update Ubuntu
+    - name: 4. Update Ubuntu
       become: true
       shell: apt-get update
 
-    - name: 6. Install MySQL and create a database
+    - name: 5. Install MySQL and create a database
       become: true
       apt:
         name: "{{ item }}"
@@ -54,20 +54,20 @@
         - mysql-client
         - mysql-server
 
-    - name: 6.1.2. Install python3-mysqldb
+    - name: 6. Install python3-mysqldb
       become: true
       apt:
         name: python3-mysqldb
         state: present
 
-    - name: 6.2. Ensure MySQL service is running
+    - name: 7. Ensure MySQL service is running
       become: true
       service:
         name: mysql
         state: started
         enabled: yes
 
-    - name: 6.3. Create MySQL database
+    - name: 8. Create MySQL database
       become: true
       mysql_db:
         name: "{{ mysql_db_name }}"
@@ -76,27 +76,41 @@
         login_user: root
         login_password: "{{ mysql_root_password }}"
 
-    - name: 6.4. Create MySQL user
+    - name: 9. Create MySQL user
       become: true
       mysql_user:
         name: "{{ mysql_user }}"
         password: "{{ mysql_user_password }}"
         priv: "{{ mysql_db_name }}.*:ALL"
-        host: "{{ mysql_bind_address }}"
+        host: "%"
         state: present
       vars:
         login_user: root
         login_password: "{{ mysql_root_password }}"
 
-    - name: 6.5 Install Git on the web server
+    - name: 10. Install Git on the web server
       become: true
       apt: name=git state=latest
 
-    - name: 7. Clone a public repository
+    - name: 11. Clone a public repository
       become: true
-      shell: rm -rf /var/www/html/web || git clone https://git.mif.vu.lt/sest8864/web.git /var/www/html
+      shell: git clone https://git.mif.vu.lt/sest8864/web.git /usr/games/web
 
-
-    - name: 8. Copy data from remote-med.sql to MySQL database
+    - name: 12. Copy data from remote-med.sql to MySQL database
       become: true
       shell: mysql -u root -p{{ mysql_root_password }} -D {{ mysql_db_name }} < {{ sql_file_path }}
+
+    - name: 13. Set bind-address in mysqld.cnf
+      become: true
+      lineinfile:
+        path: "/etc/mysql/mysql.conf.d/mysqld.cnf"
+        line: "bind-address = {{ mysql_bind_address }}"
+      notify:
+        - restart mysql service
+
+  handlers:
+    - name: restart mysql service
+      become: true
+      service:
+        name: mysql
+        state: restarted
