@@ -12,7 +12,7 @@
         <div class="row"> 
             <div class="col-6 mx-auto">
                 <h1>Registration</h1>
-                <form action="PСheck.php" method="post">
+                <form action="Pcheck.php" method="post">
                     <div class="mb-3">
                         <input type="text" class="form-control" name="login" id="login" placeholder="Input Username">
                     </div>
