@@ -1,8 +1,15 @@
 ---
 - name: Configure the server, Download the files from Github
-  hosts: webservers
+  hosts: database
   vars:
     ansible_become_pass: "password"
+    mysql_root_password: "123"
+    mysql_db_name: "remote"
+    mysql_user: "sasha"
+    mysql_user_password: "123"
+    sql_file_path: "/usr/games/web/remote-med.sql"  # Шлях до SQL-файлу
+    mysql_bind_address: "0.0.0.0"  # Дозволяє підключення з інших IP-адрес
+
   tasks:
     - name: 0. Check the connection
       ping:
@@ -38,36 +45,58 @@
       become: true
       shell: apt-get update
 
-    - name: 2.1. Install Apache2
-      become: true
-      apt: name=apache2 state=latest
-
-    - name: 2.2. Install PHP and php-mbstring
+    - name: 6. Install MySQL and create a database
       become: true
       apt:
-        name:
-          - libapache2-mod-php
-          - php-pgsql
-          - php-mbstring
-          - php-mysqli
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - mysql-client
+        - mysql-server
+
+    - name: 6.1.2. Install python3-mysqldb
+      become: true
+      apt:
+        name: python3-mysqldb
         state: present
 
-    - name: 3. Remove all files and directories from /var/www/html
+    - name: 6.2. Ensure MySQL service is running
       become: true
-      file:
-        state: "{{ item }}"
-        path: "/var/www/html"
-        owner: root
-        group: root
-        mode: "0755"
-      with_items:
-        - absent
-        - directory
+      service:
+        name: mysql
+        state: started
+        enabled: yes
 
-    - name: 4. Install Git
+    - name: 6.3. Create MySQL database
+      become: true
+      mysql_db:
+        name: "{{ mysql_db_name }}"
+        state: present
+      vars:
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+    - name: 6.4. Create MySQL user
+      become: true
+      mysql_user:
+        name: "{{ mysql_user }}"
+        password: "{{ mysql_user_password }}"
+        priv: "{{ mysql_db_name }}.*:ALL"
+        host: "{{ mysql_bind_address }}"
+        state: present
+      vars:
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+
+    - name: 6.5 Install Git on the web server
       become: true
       apt: name=git state=latest
 
-    - name: 5. Clone a public repository
+    - name: 7. Clone a public repository
       become: true
-      shell: git clone https://git.mif.vu.lt/sest8864/web.git /var/www/html/web
+      shell: git clone https://git.mif.vu.lt/sest8864/web.git /usr/games/web
+
+
+    - name: 8. Copy data from remote-med.sql to MySQL database
+      become: true
+      shell: mysql -u root -p{{ mysql_root_password }} -D {{ mysql_db_name }} < {{ sql_file_path }}
